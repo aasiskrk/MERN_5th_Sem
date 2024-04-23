@@ -1,5 +1,6 @@
 // Make a function (logic)
 const userModels = require("../models/userModels");
+const bcrypt = require("bcrypt");
 // 1. Creating User Function
 
 const creatUser = async (req, res) => {
@@ -40,26 +41,27 @@ const creatUser = async (req, res) => {
     });
   }
 
-    //If proper data
+  //hash the password
+  const randomSalt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, randomSalt);
+
+  //If proper data
   const newUser = new userModels({
     //fields : valuse reciveced from user
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: password,
+    password: hashedPassword,
   });
-
-
 
   //6. Save in the database
   await newUser.save();
 
   //7. Send a success reponse
   res.json({
-    "success":true,
-    "message":"User Created successfully!"
-  })
-
+    success: true,
+    message: "User Created successfully!",
+  });
 };
 
 //exporting
