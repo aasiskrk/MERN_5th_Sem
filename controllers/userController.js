@@ -1,6 +1,7 @@
 // Make a function (logic)
 const userModels = require("../models/userModels");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 // 1. Creating User Function
 
 const creatUser = async (req, res) => {
@@ -64,7 +65,59 @@ const creatUser = async (req, res) => {
   });
 };
 
+//Login User Function
+const loginUser = async (req, res) => {
+  //checking incoming data
+  console.log(req.body);
+
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.json({
+      success: false,
+      message: "Please enter all fields!",
+    });
+  }
+  try {
+    //1. find user, if not : stop the process
+    const user = await userModels.findOne({ email: email });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not Found",
+      });
+    }
+    //2. Compare the password, if not :stop the process
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return res.json({
+        success: false,
+        message: "Incorrect Password",
+      });
+    }
+    //3. generate JWT token
+
+    //3.1 Secret Decryption key(.env)
+    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    //4. Send the token, userData , Message to the user
+    res.json({
+      success: true,
+      message: "User Logged Successful!",
+      token: token,
+      userData: user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Internal Server Error!",
+    });
+  }
+};
+
 //exporting
 module.exports = {
   creatUser,
+  loginUser,
 };
