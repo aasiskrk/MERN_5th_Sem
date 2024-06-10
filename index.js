@@ -4,12 +4,19 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const connectDB = require("./database/database");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 
 // Crearing an express app
 const app = express();
 
 //JSON Config
 app.use(express.json());
+
+//fileupload config
+app.use(fileUpload());
+
+//make a public folder access to outside
+app.use(express.static("./public"));
 
 //Cors config
 const corsOptions = {
