@@ -209,18 +209,17 @@ const updateProduct = async (req, res) => {
         //delete from filesystem
         fs.unlinkSync(oldImagePath);
       }
-
-      //update in database
-      const updatedProduct = await productModel.findByIdAndUpdate(
-        req.params.id,
-        req.body
-      );
-      res.status(201).json({
-        succes: true,
-        message: "successfully updated",
-        updatedProduct: updatedProduct,
-      });
     }
+    //update in database
+    const updatedProduct = await productModel.findByIdAndUpdate(
+      req.params.id,
+      req.body
+    );
+    res.status(201).json({
+      succes: true,
+      message: "successfully updated",
+      updatedProduct: updatedProduct,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
