@@ -66,3 +66,6 @@ app.listen(PORT, () => {
 //link to index.js
 //http://localhost:5000/api/product/create
 //response: Product API is working.....!
+
+//exporitng for testing
+module.exports = app;

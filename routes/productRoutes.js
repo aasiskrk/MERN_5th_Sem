@@ -10,7 +10,7 @@ router.post("/create", productContoller.createProduct);
 
 //fetch all products
 //http://localhost:5000/api/product/get_all_products
-router.get("/get_all_products", authGuard, productContoller.getAllProducts);
+router.get("/get_all_products",   productContoller.getAllProducts);
 
 //fetch single product
 router.get("/get_single_product/:id", authGuard, productContoller.getProduct);
@@ -23,7 +23,7 @@ router.delete(
 );
 
 //update product
-router.put("/update_product/:id",adminGuard, productContoller.updateProduct);
+router.put("/update_product/:id", adminGuard, productContoller.updateProduct);
 
 //exporting
 module.exports = router;
