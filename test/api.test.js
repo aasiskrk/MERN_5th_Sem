@@ -5,6 +5,9 @@ const request = require("supertest");
 
 const app = require("../index");
 
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTQ5YjFmNmVlMWE3ZTE1Y2E3MGQ4ZiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3MTkyMDM0NTd9.T40jx1oxg_CVCQUzsFbD7M-l4b6ZWhC8d4iBsnywsoI";
+
 //making test collections
 describe("API Test Collection", () => {
   //test case 1(/test)
@@ -17,7 +20,9 @@ describe("API Test Collection", () => {
   });
 
   it("Get Products | Fetch all products", async () => {
-    const response = await request(app).get("/api/product/get_all_products");
+    const response = await request(app)
+      .get("/api/product/get_all_products")
+      .set("authorization", `Bearer ${token}`);
     expect(response.statusCode).toBe(201);
     expect(response.body).toBeDefined();
     expect(response.body.message).toEqual("Product fetched successfully");
